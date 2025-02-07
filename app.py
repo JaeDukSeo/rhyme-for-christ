@@ -202,16 +202,16 @@ class Vowel:
         return abs(other.stress-self.stress), other.stress+self.stress
         # if the sum is zero, then we know both stresses are zero.
 
-# Vowel colors optimized for black background visibility
+# Vowel colors with reduced brightness and no white-ish colors
 vowel_color_dict = {'AA': [(0, 255, 0), (4, 0, 0)],      # bright green
-                    'AE': [(255, 200, 0), (0, 1, 0)],     # golden yellow
+                    'AE': [(255, 165, 0), (0, 1, 0)],     # darker yellow-orange
                     'AH': [(0, 255, 128), (4, 2, 0)],     # spring green
                     'AO': [(0, 191, 255), (4, 2, 2)],     # deep sky blue
-                    'AW': [(64, 224, 208), (1.5, 2.5, 1)],# turquoise
-                    'AX': [(192, 192, 192), (2, 3, 1)],   # silver
-                    'AY': [(255, 165, 0), (0.5, 2.5, 0)], # orange
-                    'EH': [(255, 140, 0), (0, 2, 0)],     # dark orange
-                    'ER': [(173, 255, 47), (2, 2, 0)],    # green yellow
+                    'AW': [(64, 188, 208), (1.5, 2.5, 1)],# darker turquoise
+                    'AX': [(128, 128, 255), (2, 3, 1)],   # medium blue instead of silver
+                    'AY': [(255, 140, 0), (0.5, 2.5, 0)], # darker orange
+                    'EH': [(255, 100, 0), (0, 2, 0)],     # deeper orange
+                    'ER': [(150, 255, 47), (2, 2, 0)],    # darker green yellow
                     'EY': [(255, 69, 0), (0, 4, 0)],      # red orange
                     'IH': [(255, 20, 147), (1, 5, 0)],    # deep pink
                     'IX': [(255, 105, 180), (2, 6, 0)],   # hot pink
@@ -222,30 +222,30 @@ vowel_color_dict = {'AA': [(0, 255, 0), (4, 0, 0)],      # bright green
                     'UW': [(0, 0, 255), (4, 6, 2)],       # blue
                     'UX': [(148, 0, 211), (2, 6, 2)]}     # dark violet
 
-# Consonant colors optimized for black background visibility
+# Consonant colors with reduced brightness
 consonant_color_dict = {'B': [(255, 128, 0), (1, 1, 0)],  # dark orange
                        'P': [(255, 128, 0), (1, 1, 1)],
-                       'D': [(255, 140, 0), (1, 2, 0)],    # orange red
-                       'T': [(255, 140, 0), (1, 2, 1)],
+                       'D': [(255, 100, 0), (1, 2, 0)],    # deeper orange
+                       'T': [(255, 100, 0), (1, 2, 1)],
                        'G': [(255, 69, 0), (1, 3, 0)],     # red orange
                        'K': [(255, 69, 0), (1, 3, 1)],
-                       'F': [(0, 255, 127), (2, 1, 0)],    # spring green
-                       'V': [(0, 255, 127), (2, 1, 1)],
+                       'F': [(0, 200, 127), (2, 1, 0)],    # darker spring green
+                       'V': [(0, 200, 127), (2, 1, 1)],
                        'S': [(60, 179, 113), (2, 2, 0)],   # medium sea green
                        'Z': [(60, 179, 113), (2, 2, 1)],
                        'SH': [(46, 139, 87), (2, 3, 0)],   # sea green
                        'TH': [(46, 139, 87), (2, 3, 1)],
                        'DH': [(32, 178, 170), (2, 4, 0)],  # light sea green
                        'HH': [(32, 178, 170), (2, 4, 1)],
-                       'CH': [(127, 255, 0), (3, 1, 0)],   # chartreuse
-                       'JH': [(127, 255, 0), (3, 1, 1)],
+                       'CH': [(100, 255, 0), (3, 1, 0)],   # darker chartreuse
+                       'JH': [(100, 255, 0), (3, 1, 1)],
                        'M': [(255, 0, 255), (4, 1, 1)],    # magenta
                        'N': [(255, 20, 147), (4, 1, 2)],   # deep pink
                        'NG': [(255, 105, 180), (4, 1, 3)], # hot pink
-                       'W': [(0, 255, 255), (5, 1, 0)],    # cyan
-                       'Y': [(0, 206, 209), (5, 2, 0)],    # dark turquoise
-                       'L': [(72, 209, 204), (5, 3, 0)],   # medium turquoise
-                       'R': [(64, 224, 208), (5, 4, 0)]}   # turquoise
+                       'W': [(0, 200, 200), (5, 1, 0)],    # darker cyan
+                       'Y': [(0, 180, 180), (5, 2, 0)],    # darker turquoise
+                       'L': [(72, 180, 180), (5, 3, 0)],   # darker medium turquoise
+                       'R': [(64, 180, 180), (5, 4, 0)]}   # darker turquoise
 
 T1 = 2.5  # Rhyme stressed vowel threshold
 T2 = 1    # Rhyme stressed vowel consonance threshold
