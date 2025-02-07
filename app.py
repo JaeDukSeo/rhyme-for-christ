@@ -491,7 +491,7 @@ def scheme(vowels, congrps_bv, chunks, colorids, original_text):
                      str([chunks[j].vowel.name]) +
                      str([chunks[j].congrp.consonant_list[i].name 
                           for i in range(len(chunks[j].congrp.consonant_list))]) + 
-                     bg.rs
+                     bg.rs)
         
         # Group phonetics by word
         if current_word != vowels[j].root_word:
