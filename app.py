@@ -202,18 +202,18 @@ class Vowel:
         return abs(other.stress-self.stress), other.stress+self.stress
         # if the sum is zero, then we know both stresses are zero.
 
-# Vowel colors with reduced brightness and no white-ish colors
-vowel_color_dict = {'AA': [(0, 255, 0), (4, 0, 0)],      # bright green
-                    'AE': [(255, 165, 0), (0, 1, 0)],     # darker yellow-orange
-                    'AH': [(0, 255, 128), (4, 2, 0)],     # spring green
-                    'AO': [(0, 191, 255), (4, 2, 2)],     # deep sky blue
+# Vowel colors with adjusted problematic colors
+vowel_color_dict = {'AA': [(255, 128, 0), (4, 0, 0)],    # changed to orange from green
+                    'AE': [(255, 165, 0), (0, 1, 0)],     # golden orange
+                    'AH': [(255, 69, 0), (4, 2, 0)],      # changed to red-orange from green
+                    'AO': [(0, 128, 255), (4, 2, 2)],     # darker blue
                     'AW': [(64, 188, 208), (1.5, 2.5, 1)],# darker turquoise
-                    'AX': [(128, 128, 255), (2, 3, 1)],   # medium blue instead of silver
+                    'AX': [(128, 128, 255), (2, 3, 1)],   # medium blue
                     'AY': [(255, 140, 0), (0.5, 2.5, 0)], # darker orange
                     'EH': [(255, 100, 0), (0, 2, 0)],     # deeper orange
                     'ER': [(150, 255, 47), (2, 2, 0)],    # darker green yellow
                     'EY': [(255, 69, 0), (0, 4, 0)],      # red orange
-                    'IH': [(255, 20, 147), (1, 5, 0)],    # deep pink
+                    'IH': [(255, 0, 128), (1, 5, 0)],     # changed to deeper pink
                     'IX': [(255, 105, 180), (2, 6, 0)],   # hot pink
                     'IY': [(255, 0, 255), (0, 6, 0)],     # magenta
                     'OW': [(30, 144, 255), (3.5, 4.5, 2)],# dodger blue
@@ -491,7 +491,7 @@ def scheme(vowels, congrps_bv, chunks, colorids, original_text):
                      str([chunks[j].vowel.name]) +
                      str([chunks[j].congrp.consonant_list[i].name 
                           for i in range(len(chunks[j].congrp.consonant_list))]) + 
-                     bg.rs)
+                     bg.rs
         
         # Group phonetics by word
         if current_word != vowels[j].root_word:
