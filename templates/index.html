@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhyme Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .textarea-container {
+            position: relative;
+            padding: 20px;
+        }
+        
+        #lyrics-input {
+            width: 100%;
+            height: 200px;
+            resize: none;
+            font-size: 16px;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+            margin-bottom: 15px;
+        }
+        
+        #analyze-btn {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 10px;
+        }
+        
+        #analyze-btn:hover {
+            background-color: #0056b3;
+        }
+        
+        .result-container {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #000;  /* Terminal-like black background */
+            font-family: 'Courier New', monospace;
+            color: #fff;
+        }
+        
+        /* Preserve whitespace and line breaks */
+        .ansi-output {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="textarea-container">
+                    <textarea id="lyrics-input" class="form-control" 
+                              placeholder="Enter your lyrics here..."></textarea>
+                    <button id="analyze-btn" class="btn btn-primary">Analyze Rhymes</button>
+                </div>
+                <div id="result-wrapper" style="display: none;">
+                    <div class="result-container" id="result">
+                        <!-- Results will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Load saved text when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedText = localStorage.getItem('lyricsText');
+            const savedResult = localStorage.getItem('analysisResult');
+            
+            if (savedText) {
+                document.getElementById('lyrics-input').value = savedText;
+            }
+            
+            if (savedResult) {
+                document.getElementById('result-wrapper').style.display = 'block';
+                document.getElementById('result').innerHTML = savedResult;
+            }
+        });
+
+        // Save text when it changes
+        document.getElementById('lyrics-input').addEventListener('input', (e) => {
+            localStorage.setItem('lyricsText', e.target.value);
+        });
+
+        // Analyze button click handler
+        document.getElementById('analyze-btn').addEventListener('click', async () => {
+            try {
+                const text = document.getElementById('lyrics-input').value;
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text }),
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Show result container
+                document.getElementById('result-wrapper').style.display = 'block';
+                
+                // Insert the HTML-converted ANSI output
+                const resultContainer = document.getElementById('result');
+                resultContainer.innerHTML = `<div class="ansi-output">${data.result}</div>`;
+                
+                localStorage.setItem('analysisResult', resultContainer.innerHTML);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while analyzing the text. Please try again.');
+            }
+        });
+
+        // Handle Ctrl+S to save
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                document.getElementById('analyze-btn').click();
+            }
+        });
+    </script>
+</body>
+</html>
