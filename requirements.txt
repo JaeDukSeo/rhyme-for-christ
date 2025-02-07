@@ -11,3 +11,4 @@ packaging==23.2
 pronouncing==0.2.0
 sty==1.0.4
 Werkzeug==3.0.1
+nltk
