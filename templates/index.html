@@ -2,26 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no">
     <title>Rhyme Analyzer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+        /* Set a smaller initial scale for mobile */
+        @viewport {
+            width: device-width;
+            zoom: 0.8;
+            min-zoom: 0.8;
+            max-zoom: 0.8;
+        }
+
         .main-container {
             display: flex;
             height: 100vh;
             overflow: hidden;
+            zoom: 0.8; /* Additional zoom out */
         }
 
         .main-section {
-            flex: 2;  /* Takes up 2/3 of the width */
+            flex: 2;
             padding: 20px;
             overflow-y: auto;
             border-right: 1px solid #ddd;
         }
 
         .search-sidebar {
-            flex: 1;  /* Takes up 1/3 of the width */
+            flex: 1;
             padding: 20px;
             overflow-y: auto;
             background-color: #f8f9fa;
@@ -47,11 +56,10 @@
 
         #lyrics-input {
             width: 100%;
-            min-height: 300px;
-            font-size: 16px;
+            min-height: 500px; /* Increased from 300px */
+            font-size: 14px; /* Slightly smaller font */
             line-height: 1.5;
             padding: 15px;
-            margin: 0 auto;
         }
 
         .button-stack {
@@ -77,6 +85,28 @@
         .ansi-output {
             white-space: pre-wrap;
             word-wrap: break-word;
+        }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .main-section, .search-sidebar {
+                flex: none;
+                height: auto;
+                max-height: none;
+            }
+
+            .search-sidebar {
+                border-top: 1px solid #ddd;
+                border-right: none;
+            }
+
+            #lyrics-input {
+                min-height: 400px; /* Slightly shorter on mobile */
+            }
         }
     </style>
 </head>
