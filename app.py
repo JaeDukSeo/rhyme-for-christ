@@ -12,6 +12,9 @@ from flask       import Flask, render_template, request, jsonify
 from colorama    import init
 from collections import Counter
 
+from g2p_en import G2p
+g2p = G2p()
+nltk.download('averaged_perceptron_tagger_eng')
 init()
 
 class Rhyme_pair:
@@ -561,6 +564,30 @@ def analyze():
                 return jsonify({'result': html_output})
             
         return jsonify({'error': 'Could not process text'}), 400
+        
+    except Exception as e:
+        print(f"Error processing request: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/find-similar', methods=['POST'])
+def find_similar():
+    try:
+        pattern = request.json.get('word', '').lower().strip()
+        if not pattern:
+            return jsonify({'error': 'No pattern provided'}), 400
+            
+        print(pattern)
+        pronunciations = g2p(pattern)
+        pronunciations = ' '.join(pronunciations)
+        print(pronunciations)
+        # pronunciations = pronouncing.phones_for_word(pattern)[0]
+        # print(pronunciations)
+        similar_words  = pronouncing.search(pronunciations)
+        
+        # Sort by length and limit results
+        similar_words = sorted(similar_words, key=len)
+        
+        return jsonify({'similar_words': similar_words})
         
     except Exception as e:
         print(f"Error processing request: {str(e)}")
