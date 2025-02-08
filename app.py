@@ -15,6 +15,7 @@ from collections import Counter
 from g2p_en import G2p
 g2p = G2p()
 nltk.download('averaged_perceptron_tagger_eng')
+nltk.download('punkt')
 init()
 
 class Rhyme_pair:
