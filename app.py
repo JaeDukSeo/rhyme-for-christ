@@ -15,7 +15,6 @@ from collections import Counter
 from g2p_en import G2p
 g2p = G2p()
 nltk.download('averaged_perceptron_tagger_eng')
-nltk.download('punkt')
 init()
 
 class Rhyme_pair:
@@ -577,16 +576,13 @@ def find_similar():
         if not pattern:
             return jsonify({'error': 'No pattern provided'}), 400
             
-        print(pattern)
         pronunciations = g2p(pattern)
         pronunciations = ' '.join(pronunciations)
-        print(pronunciations)
-        # pronunciations = pronouncing.phones_for_word(pattern)[0]
-        # print(pronunciations)
         similar_words  = pronouncing.search(pronunciations)
-        
+        similar_words  = similar_words + pronouncing.rhymes(pattern)
+                
         # Sort by length and limit results
-        similar_words = sorted(similar_words, key=len)
+        similar_words = sorted(similar_words)
         
         return jsonify({'similar_words': similar_words})
         
