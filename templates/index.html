@@ -72,8 +72,8 @@
             <div class="textarea-container">
                 <textarea id="lyrics-input" class="form-control" 
                           placeholder="Enter your lyrics here..."
-                          style="width: 100%; min-height: 600px; font-size: 32px; line-height: 1.5; 
-                          padding: 15px; margin-bottom: 20px;">
+                          style="width: 100%; min-height: 900px; font-size: 32px; line-height: 1.5; 
+                          padding: 15px; margin-bottom: 20px; text-align: center;">
                 </textarea>
             </div>
         </div>
@@ -84,31 +84,23 @@
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <input type="text" id="word-input" class="form-control" 
                        placeholder="Enter sound pattern (e.g., 'ink')" 
-                       style="width: 100%;">
+                       style="width: 100%; height: 80px; padding: 12px;">
                 <button id="search-btn" class="btn btn-primary btn-lg" 
-                        style="width: 100%; padding: 12px;">
+                        style="width: 100%; height: 80px; padding: 12px;">
                     Search
                 </button>
             </div>
-            <div id="similar-words-result" style="max-height: 200px; overflow-y: auto; margin-top: 10px;"></div>
+            <div id="similar-words-result" style="min-height: 800px; overflow-y: auto; margin-top: 10px;"></div>
         </div>
 
         <!-- 3 & 4. Analysis and Copy Buttons -->
         <div class="button-stack" style="display: flex; flex-direction: column; gap: 10px; margin: 20px 0;">
-            <button id="analyze-btn" class="btn btn-primary btn-lg" style="padding: 15px;">
-                Analyze Rhymes
-            </button>
             <button id="copy-btn" class="btn btn-secondary btn-lg" style="padding: 15px;">
                 <i class="fas fa-clipboard"></i> Copy to Clipboard
             </button>
         </div>
 
-        <!-- 5. Rhyme Analysis Results -->
-        <div id="result-wrapper" style="display: none; margin-top: 20px;">
-            <div id="result" class="result-container" 
-                 style="background-color: #000; color: #fff; padding: 20px; border-radius: 8px;">
-            </div>
-        </div>
+   
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
