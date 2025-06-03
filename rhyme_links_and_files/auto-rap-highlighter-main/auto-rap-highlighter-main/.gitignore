@@ -1,0 +1,13 @@
+Pipfile.lock
+/g2p-seq2seq
+*.swp
+/tables/
+/arpabet-syllabifier-master/
+/colab_files/
+/htmls/
+/phoneme_lists/
+/src/__pycache__/
+/temp/
+/texts/
+/unknown_lists/
+/src/tests/__pycache__/

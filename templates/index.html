@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.67, maximum-scale=1.0, user-scalable=yes">
-    <title>Rhyme Analyzer</title>
+    <title>Similar Sound Finder</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
@@ -24,63 +24,13 @@
         .title {
             margin-bottom: 15px;
         }
-
-        .textarea-container {
-            margin-bottom: 20px;
-        }
-
-        #lyrics-input {
-            width: 100%;
-            min-height: 300px;
-            font-size: 16px;
-            line-height: 1.5;
-            padding: 15px;
-            margin: 0 auto;
-        }
-
-        .button-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .result-container {
-            margin-top: 20px;
-            text-align: left;  /* Keep text alignment left for results */
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 20px;
-            background-color: #000;
-            color: #fff;
-            border-radius: 8px;
-        }
-        
-        /* Preserve whitespace and line breaks */
-        .ansi-output {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
     </style>
 </head>
 <body>
     <div class="container" style="padding: 20px;">
-        <!-- 1. Textarea for lyrics -->
+        <!-- Similar Sound Finder -->
         <div class="section">
-            <h1 class="title">Rhyme Analyzer</h1>
-            <div class="textarea-container">
-                <textarea id="lyrics-input" class="form-control" 
-                          placeholder="Enter your lyrics here..."
-                          style="width: 100%; min-height: 2000px; font-size: 32px; line-height: 1.5; 
-                          padding: 15px; margin-bottom: 20px; text-align: center;">
-                </textarea>
-            </div>
-        </div>
-
-        <!-- 2. Similar Sound Finder -->
-        <div class="section" style="margin: 20px 0; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
-            <h2 class="title">Similar Sound Finder</h2>
+            <h1 class="title">Similar Sound Finder</h1>
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <input type="text" id="word-input" class="form-control" 
                        placeholder="Enter sound pattern (e.g., 'ink')" 
@@ -92,124 +42,10 @@
             </div>
             <div id="similar-words-result" style="min-height: 800px; overflow-y: auto; margin-top: 10px;"></div>
         </div>
-
-        <!-- 3 & 4. Analysis and Copy Buttons -->
-        <div class="button-stack" style="display: flex; flex-direction: column; gap: 10px; margin: 20px 0;">
-            <button id="copy-btn" class="btn btn-secondary btn-lg" style="padding: 15px;">
-                <i class="fas fa-clipboard"></i> Copy to Clipboard
-            </button>
-        </div>
-
-   
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Load saved text when page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedText = localStorage.getItem('lyricsText');
-            const savedResult = localStorage.getItem('analysisResult');
-            
-            if (savedText) {
-                document.getElementById('lyrics-input').value = savedText;
-            }
-            
-            if (savedResult) {
-                document.getElementById('result-wrapper').style.display = 'block';
-                document.getElementById('result').innerHTML = savedResult;
-            }
-        });
-
-        // Save text when it changes
-        document.getElementById('lyrics-input').addEventListener('input', (e) => {
-            localStorage.setItem('lyricsText', e.target.value);
-        });
-
-        // Analyze button click handler
-        document.getElementById('analyze-btn').addEventListener('click', async () => {
-            try {
-                const text = document.getElementById('lyrics-input').value;
-                const response = await fetch('/analyze', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ text }),
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                // Show result container
-                document.getElementById('result-wrapper').style.display = 'block';
-                
-                // Insert the HTML-converted ANSI output
-                const resultContainer = document.getElementById('result');
-                resultContainer.innerHTML = `<div class="ansi-output">${data.result}</div>`;
-                
-                localStorage.setItem('analysisResult', resultContainer.innerHTML);
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred while analyzing the text. Please try again.');
-            }
-        });
-
-        // Handle Ctrl+S to save
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 's') {
-                e.preventDefault();
-                document.getElementById('analyze-btn').click();
-            }
-        });
-    </script>
-
-    <script>
-        // Add this to your existing JavaScript
-        document.getElementById('copy-btn').addEventListener('click', async () => {
-            const textArea = document.getElementById('lyrics-input');
-            const text = textArea.value;
-            
-            try {
-                await navigator.clipboard.writeText(text);
-                // Visual feedback
-                const copyBtn = document.getElementById('copy-btn');
-                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                copyBtn.classList.remove('btn-secondary');
-                copyBtn.classList.add('btn-success');
-                
-                // Reset button after 2 seconds
-                setTimeout(() => {
-                    copyBtn.innerHTML = '<i class="fas fa-clipboard"></i> Copy to Clipboard';
-                    copyBtn.classList.remove('btn-success');
-                    copyBtn.classList.add('btn-secondary');
-                }, 2000);
-            } catch (err) {
-                // Fallback for older browsers
-                textArea.select();
-                textArea.setSelectionRange(0, 99999); // For mobile devices
-                document.execCommand('copy');
-                
-                // Visual feedback
-                const copyBtn = document.getElementById('copy-btn');
-                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                copyBtn.classList.remove('btn-secondary');
-                copyBtn.classList.add('btn-success');
-                
-                // Reset button after 2 seconds
-                setTimeout(() => {
-                    copyBtn.innerHTML = '<i class="fas fa-clipboard"></i> Copy to Clipboard';
-                    copyBtn.classList.remove('btn-success');
-                    copyBtn.classList.add('btn-secondary');
-                }, 2000);
-            }
-        });
-    </script>
-
-    <script>
-        // Add this to your existing JavaScript
         document.getElementById('search-btn').addEventListener('click', async () => {
             const word = document.getElementById('word-input').value.trim();
             if (!word) return;

@@ -14,6 +14,8 @@ from collections import Counter
 
 from g2p_en import G2p
 g2p = G2p()
+
+
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger_eng')
 init()
@@ -34,7 +36,6 @@ class Rhyme_pair:
         self.chunk1 = chunk1
         self.chunk2 = chunk2
         
-
 class Alliteration_pair:
     """
     A pair of alliterating consonant groups, according to specified alliteration threshold.
@@ -48,7 +49,6 @@ class Alliteration_pair:
     
     def get_color(self):
         return self.congrp1.get_color()
-
 
 class Chunk:
     """
@@ -75,7 +75,6 @@ class Chunk:
         con_dist = self.congrp.compare_to_congrp(other_chunk.congrp)
         stress_dist = self.vowel.stressCompare(other_chunk.vowel)
         return vowel_dist, con_dist, stress_dist
-
 
 class Con_grp:
     """
@@ -129,7 +128,6 @@ class Con_grp:
 #                score = 0  # if one is empty and the other isn't then they can't alliterate
         return score
 
-
 class Consonant:
     """
     A single consonant object.
@@ -166,7 +164,6 @@ class Consonant:
                 if otherP.getZ() == self.position[2]:
                     score += 1
         return score  # Same group; score 1, same subgp; score 2, same consonant; score 3
-
 
 class Vowel:
     """
@@ -581,9 +578,7 @@ def find_similar():
         pronunciations = ' '.join(pronunciations)
         similar_words  = pronouncing.search(pronunciations)
         similar_words  = similar_words + pronouncing.rhymes(pattern)
-                
-        # Sort by length and limit results
-        similar_words = sorted(similar_words)
+        similar_words  = sorted(similar_words)
         
         return jsonify({'similar_words': similar_words})
         
