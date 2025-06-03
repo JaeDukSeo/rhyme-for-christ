@@ -82,15 +82,6 @@
         <div class="section" style="margin: 20px 0; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
             <h2 class="title">Multisyllabic Rhyme Finder</h2>
             <p class="text-muted mb-3">Find rhyming phrases that match your input phrase's rhythm and sound pattern.</p>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <input type="text" id="phrase-input" class="form-control" 
-                       placeholder="Enter a phrase (e.g., 'take it to the grave')" 
-                       style="width: 100%; height: 80px; padding: 12px; font-size: 32px;">
-                <button id="phrase-search-btn" class="btn btn-primary btn-lg" 
-                        style="width: 100%; height: 80px; padding: 12px;">
-                    Find Rhyming Phrases
-                </button>
-            </div>
             <div id="multisyllabic-result" style="min-height: 200px; overflow-y: auto; margin-top: 10px;">
                 <div class="card">
                     <div class="card-header bg-dark text-white">
@@ -106,6 +97,31 @@
                                 <li>"make it through the day" → "fake it till you say"</li>
                             </ul>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simple Finder -->
+        <div class="section" style="margin: 20px 0; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+            <h2 class="title">Simple Finder</h2>
+            <p class="text-muted mb-3">Quick and simple rhyme finder for basic word rhymes.</p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <input type="text" id="simple-input" class="form-control" 
+                       placeholder="Enter a word to find rhymes" 
+                       style="width: 100%; height: 80px; padding: 12px; font-size: 32px;">
+                <button id="simple-search-btn" class="btn btn-primary btn-lg" 
+                        style="width: 100%; height: 80px; padding: 12px;">
+                    Find Simple Rhymes
+                </button>
+            </div>
+            <div id="simple-result" style="min-height: 200px; overflow-y: auto; margin-top: 10px;">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Simple Rhymes</h5>
+                    </div>
+                    <div class="card-body" id="simple-rhymes">
+                        <p class="text-muted">Enter a word to find its basic rhymes.</p>
                     </div>
                 </div>
             </div>
@@ -276,7 +292,7 @@
                 });
                 
                 const data = await response.json();
-                
+                console.log(data);
                 if (data.error) {
                     document.getElementById('similar-words-result').innerHTML = 
                         `<div class="alert alert-danger">${data.error}</div>`;
@@ -317,37 +333,40 @@
 
     <script>
         // Add this to your existing JavaScript
-        document.getElementById('phrase-search-btn').addEventListener('click', async () => {
-            const phrase = document.getElementById('phrase-input').value.trim();
-            if (!phrase) return;
+        document.getElementById('simple-search-btn').addEventListener('click', async () => {
+            const word = document.getElementById('simple-input').value.trim();
+            if (!word) return;
             
             try {
-                const response = await fetch('/find-similar', {
+                const response = await fetch('/find-simple', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ word: phrase }),
+                    body: JSON.stringify({ word }),
                 });
                 
                 const data = await response.json();
-                
+                console.log(data);
                 if (data.error) {
-                    document.getElementById('multisyllabic-rhymes').innerHTML = 
+                    document.getElementById('simple-rhymes').innerHTML = 
                         `<div class="alert alert-danger">${data.error}</div>`;
                 } else {
-                    const rhymes = data.multisyllabic_rhymes;
+                    const rhymes = data.rhymes;
                     if (rhymes.length === 0) {
-                        document.getElementById('multisyllabic-rhymes').innerHTML = 
-                            `<p class="text-muted">No rhyming phrases found for "${phrase}". Try a different phrase.</p>`;
+                        document.getElementById('simple-rhymes').innerHTML = 
+                            `<p class="text-muted">No rhymes found for "${word}". Try a different word.</p>`;
                     } else {
-                        document.getElementById('multisyllabic-rhymes').innerHTML = 
-                            `<p class="text-muted">Rhyming phrases for "${phrase}":</p>
+                        document.getElementById('simple-rhymes').innerHTML = 
+                            `<p class="text-muted">Rhymes for "${word}":</p>
+                             <div class="alert alert-info mb-3">
+                                <strong>Pronunciation:</strong> ${data.pronunciation}
+                             </div>
                              <div class="list-group">
-                                ${rhymes.map(phrase => 
+                                ${rhymes.map(rhyme => 
                                     `<div class="list-group-item list-group-item-action">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h6 class="mb-1">${phrase}</h6>
+                                            <h6 class="mb-1">${rhyme}</h6>
                                         </div>
                                     </div>`
                                 ).join('')}
@@ -356,10 +375,12 @@
                 }
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('multisyllabic-rhymes').innerHTML = 
+                document.getElementById('simple-rhymes').innerHTML = 
                     '<div class="alert alert-danger">An error occurred while searching.</div>';
             }
         });
     </script>
+
+
 </body>
 </html>
