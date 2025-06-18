@@ -66,15 +66,96 @@
 </head>
 <body>
     <div class="container" style="padding: 20px;">
-        <!-- 1. Textarea for lyrics -->
-        <div class="section">
-            <h1 class="title">Rhyme Analyzer</h1>
-            <div class="textarea-container">
-                <textarea id="lyrics-input" class="form-control" 
-                          placeholder="Enter your lyrics here..."
-                          style="width: 100%; min-height: 2000px; font-size: 32px; line-height: 1.5; 
-                          padding: 15px; margin-bottom: 20px; text-align: center;">
-                </textarea>
+        <!-- Song 1 -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center" 
+                 style="cursor: pointer;" 
+                 data-bs-toggle="collapse" 
+                 data-bs-target="#song-1-content" 
+                 aria-expanded="true" 
+                 aria-controls="song-1-content">
+                <div class="d-flex align-items-center gap-3">
+                    <input type="text" id="song-title-1" class="form-control form-control-lg" 
+                           value="Song 1" style="font-size: 2rem; font-weight: bold; border: none; background: transparent; color: white;"
+                           onclick="event.stopPropagation()">
+                    <button class="btn btn-light btn-sm" onclick="event.stopPropagation(); document.getElementById('song-title-1').focus()">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div id="song-1-content" class="collapse show">
+                <div class="card-body">
+                    <div class="textarea-container">
+                        <textarea id="lyrics-input-1" class="form-control" 
+                                  placeholder="Enter your lyrics here..."
+                                  style="width: 100%; min-height: 800px; font-size: 32px; line-height: 1.5; 
+                                  padding: 15px; margin-bottom: 20px; text-align: center;">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Song 2 -->
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center" 
+                 style="cursor: pointer;" 
+                 data-bs-toggle="collapse" 
+                 data-bs-target="#song-2-content" 
+                 aria-expanded="true" 
+                 aria-controls="song-2-content">
+                <div class="d-flex align-items-center gap-3">
+                    <input type="text" id="song-title-2" class="form-control form-control-lg" 
+                           value="Song 2" style="font-size: 2rem; font-weight: bold; border: none; background: transparent; color: white;"
+                           onclick="event.stopPropagation()">
+                    <button class="btn btn-light btn-sm" onclick="event.stopPropagation(); document.getElementById('song-title-2').focus()">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div id="song-2-content" class="collapse show">
+                <div class="card-body">
+                    <div class="textarea-container">
+                        <textarea id="lyrics-input-2" class="form-control" 
+                                  placeholder="Enter your lyrics here..."
+                                  style="width: 100%; min-height: 800px; font-size: 32px; line-height: 1.5; 
+                                  padding: 15px; margin-bottom: 20px; text-align: center;">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Song 3 -->
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center" 
+                 style="cursor: pointer;" 
+                 data-bs-toggle="collapse" 
+                 data-bs-target="#song-3-content" 
+                 aria-expanded="true" 
+                 aria-controls="song-3-content">
+                <div class="d-flex align-items-center gap-3">
+                    <input type="text" id="song-title-3" class="form-control form-control-lg" 
+                           value="Song 3" style="font-size: 2rem; font-weight: bold; border: none; background: transparent; color: white;"
+                           onclick="event.stopPropagation()">
+                    <button class="btn btn-light btn-sm" onclick="event.stopPropagation(); document.getElementById('song-title-3').focus()">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div id="song-3-content" class="collapse show">
+                <div class="card-body">
+                    <div class="textarea-container">
+                        <textarea id="lyrics-input-3" class="form-control" 
+                                  placeholder="Enter your lyrics here..."
+                                  style="width: 100%; min-height: 800px; font-size: 32px; line-height: 1.5; 
+                                  padding: 15px; margin-bottom: 20px; text-align: center;">
+                        </textarea>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -202,18 +283,45 @@
     <script>
         // Load saved text when page loads
         document.addEventListener('DOMContentLoaded', () => {
-            const savedText = localStorage.getItem('lyricsText');
-            
-            if (savedText) {
-                document.getElementById('lyrics-input').value = savedText;
+            // Load all songs
+            for (let i = 1; i <= 3; i++) {
+                const savedText = localStorage.getItem(`lyricsText-${i}`);
+                const savedTitle = localStorage.getItem(`songTitle-${i}`);
+                const savedCollapseState = localStorage.getItem(`songCollapse-${i}`);
+                
+                if (savedText) {
+                    document.getElementById(`lyrics-input-${i}`).value = savedText;
+                }
+                
+                if (savedTitle) {
+                    document.getElementById(`song-title-${i}`).value = savedTitle;
+                }
+
+                // Restore collapse state
+                if (savedCollapseState === 'false') {
+                    document.getElementById(`song-${i}-content`).classList.remove('show');
+                }
             }
-            
         });
 
-        // Save text when it changes
-        document.getElementById('lyrics-input').addEventListener('input', (e) => {
-            localStorage.setItem('lyricsText', e.target.value);
-        });
+        // Save text when it changes for all songs
+        for (let i = 1; i <= 3; i++) {
+            document.getElementById(`lyrics-input-${i}`).addEventListener('input', (e) => {
+                localStorage.setItem(`lyricsText-${i}`, e.target.value);
+            });
+
+            document.getElementById(`song-title-${i}`).addEventListener('input', (e) => {
+                localStorage.setItem(`songTitle-${i}`, e.target.value);
+            });
+
+            // Save collapse state
+            document.getElementById(`song-${i}-content`).addEventListener('show.bs.collapse', () => {
+                localStorage.setItem(`songCollapse-${i}`, 'true');
+            });
+            document.getElementById(`song-${i}-content`).addEventListener('hide.bs.collapse', () => {
+                localStorage.setItem(`songCollapse-${i}`, 'false');
+            });
+        }
 
         // Handle Ctrl+S to save
         document.addEventListener('keydown', (e) => {
