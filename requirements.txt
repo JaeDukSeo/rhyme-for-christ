@@ -13,3 +13,4 @@ sty==1.0.4
 Werkzeug==3.0.1
 nltk==3.8.1
 g2p_en==2.0.0
+levenshtein==0.27.1
